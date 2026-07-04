@@ -3,8 +3,8 @@
 #include <WebServer.h>
 
 // إعدادات شبكة الواي فاي التي ستبثها البوردة
-const char* ssid = "PS4-Secure-Wall";
-const char* password = ""; // بدون باسور تيسيراً للاتصال السريع
+const char* ssid = "PS4-Secure-Wall"; // اسم الشبكة
+const char* password = "PS4-WALL-1901"; // الباسورد للشبكة
 
 // إعدادات المنافذ والـ DNS
 const byte DNS_PORT = 53;
@@ -27,7 +27,7 @@ String responseHTML = ""
 "</head>"
 "<body>"
 "    <div class='container'>"
-"        <h1>REDIRECT WEB FOR ADVANCED NETNAME(NETNAME)</h1>"
+"        <h1>REDIRECT WEB PS4</h1>"
 "        <p>External Internet Traffic is Strictly Blocked. Sony Servers Unreachable.</p>"
 "    </div>"
 "</body>"
