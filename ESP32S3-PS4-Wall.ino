@@ -2,16 +2,16 @@
 #include <DNSServer.h>
 #include <WebServer.h>
 
-// إعدادات شبكة الواي فاي التي ستبثها البوردة
-const char* ssid = "PS4-Secure-Wall"; // اسم الشبكة
-const char* password = "PS4-WALL-1901"; // الباسورد للشبكة
+// Access Point Configuration
+const char* ssid = "PS4-Secure-Wall";
+const char* password = "PS4-PASSOWRD-09089"; // PASSWORD
 
-// إعدادات المنافذ والـ DNS
+// Network Ports & DNS Setup
 const byte DNS_PORT = 53;
 DNSServer dnsServer;
 WebServer server(80);
 
-// محتوى صفحة الـ HTML المطلوبة
+// Captive Portal HTML Response
 String responseHTML = ""
 "<!DOCTYPE html>"
 "<html>"
@@ -36,7 +36,7 @@ String responseHTML = ""
 void setup() {
   Serial.begin(115200);
 
-  // تشغيل البوردة كـ Access Point وبث الشبكة
+  // Initialize ESP32-S3 as an Access Point
   WiFi.mode(WIFI_AP);
   WiFi.softAP(ssid, password);
 
@@ -46,10 +46,10 @@ void setup() {
   Serial.print("AP IP address: ");
   Serial.println(WiFi.softAPIP());
 
-  // تشغيل سيرفر الـ DNS ليعترض أي طلب ويرسله لـ IP البوردة الخاص
+  // Start DNS Server to intercept all traffic and redirect to local IP
   dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
 
-  // تجهيز السيرفر الداخلي ليعرض الصفحة المطلوبة عند أي طلب تصفح
+  // Handle all HTTP requests by serving the local captive portal page
   server.onNotFound([]() {
     server.send(200, "text/html", responseHTML);
   });
@@ -59,7 +59,7 @@ void setup() {
 }
 
 void loop() {
-  // تشغيل العمليات بالخلفية بشكل مستمر لضمان الحجب والتوجيه فوراً
+  // Keep the DNS routing and HTTP server processes active
   dnsServer.processNextRequest();
   server.handleClient();
 }
